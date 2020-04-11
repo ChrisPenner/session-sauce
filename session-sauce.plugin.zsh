@@ -1,9 +1,6 @@
 #!/bin/bash
 
-fzf_opts=(-1 -i)
-
 # Dependencies: fzf & tmux
-
 if ! command -V "fzf" 2>&1 >/dev/null ; then
     echo "sesh requires fzf, but couldn't find it on your path" >&2
     echo "Find installation instructions here: https://github.com/junegunn/fzf" >&2
@@ -27,9 +24,10 @@ fi
 
 _sess_ensure_session() {
     local session="$1"
+    local dir="$2"
     # Create new session
     # Fail silently if it already exists
-    tmux new-session -d -s "$session" -c "cd $SESS_PROJECT_DIR/$session" >/dev/null 2>&1
+    tmux new-session -d -s "$session" -c "$dir" >/dev/null 2>&1
 }
 
 _sess_switch_session() {
@@ -41,28 +39,40 @@ _sess_list_sessions() {
     tmux list-sessions -F "#{session_name}"
 }
 
+_sess_split_name_from_dir() {
+    xargs -I '{}' bash -c 'echo -e "{}\t$(basename {})"' 
+}
+
 
 _sess_pick_and_switch() {
         # read list of sessions from stdin
-        local session=$(sort | uniq | fzf "${fzf_opts[@]}")
-        if [[ -z "$session" ]]; then
-            # no session found
+        local session_and_dir=$(sort -k2 | uniq -i -f1 | fzf -1 --no-multi --with-nth=2 -q "$1")
+        if [[ -z "$session_and_dir" ]]; then
+            # no session chosen
             return 0
         fi
-        _sess_ensure_session "$session"
+        dir=$(echo "$session_and_dir" | cut -f1)
+        session=$(echo "$session_and_dir" | cut -f2)
+        _sess_ensure_session "$session" "$dir"
         _sess_switch_session "$session"
 }
 
 case "$1" in
     # Help
     -h*|help|--h*)
-        echo Usage: >&2
+        cat >&2 <<EOF
+Usage:
+
+
+$ sess new
+EOF
         ;;
     # new
     n*)
         # Create if missing, otherwise join existing
-        local session="$(basename "$(pwd)")"
-        _sess_ensure_session "$session"
+        local dir="$(pwd)"
+        local session="$(basename "$dir")"
+        _sess_ensure_session "$session" "$dir"
         _sess_switch_session "$session"
         ;;
 
@@ -73,25 +83,25 @@ case "$1" in
 
     # change/choose
     c*)
-        _sess_list_sessions | _sess_pick_and_switch
+        _sess_list_sessions | _sess_split_name_from_dir | _sess_pick_and_switch "$2"
         ;;
 
     # switch
-    s*)
+    *)
         if [[ -z "$SESS_PROJECT_DIR" ]]; then
             echo "Set your SESS_PROJECT_DIR environment variable" >&2
             echo "to allow searching for possible sessions" >&2
             return 1
         fi
 
-        (ls "$SESS_PROJECT_DIR"; _sess_list_sessions) | _sess_pick_and_switch
+        (ls -d "$SESS_PROJECT_DIR"/* | _sess_split_name_from_dir; _sess_list_sessions) | _sess_pick_and_switch "$2"
         ;;
 esac
 
 
 # If we're in zsh we can unbind these functions so we don't pollute the global
 # namespace
-if command -V unfunction; then
+if command -V unfunction 2>&1 >/dev/null ; then
     unfunction _sess_pick_and_switch
     unfunction _sess_list_sessions
     unfunction _sess_switch_session
