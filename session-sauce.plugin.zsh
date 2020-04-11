@@ -74,7 +74,17 @@ outside of one, and switching sessions of the current client if you're already
 inside tmux.
 
 Note: All subcommand names can optionally be shortened to their first letter.
-e.g. 'sess s' is equivalent to 'sess switch'
+E.g. 'sess s' is equivalent to 'sess switch'
+
+Dependencies:
+
+- fzf
+    Find installation instructions here: https://github.com/junegunn/fzf
+    Or 'brew install fzf' on a Mac
+
+- tmux
+    Find installation instructions here: https://github.com/tmux/tmux
+    Or 'brew install tmux' on a Mac
 
 Configuration:
 
@@ -98,7 +108,13 @@ If there is only one match for the query the result
 will be selected automatically.
 
 $ sess new [session-name]
-Create new session in the current directory
+Normally you'll just use 'sess switch' to create sessions,
+but 'sess new' can be used to explicitly create new session 
+in the current directory.
+
+This can be useful for creating sessions for projects 
+outside of SESS_PROJECT_ROOT.
+
 If no session name is provided the directory name will be used
 
 $ sess list
