@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sess() {
+
 # Dependencies: fzf & tmux
 if ! command -V "fzf" 2>&1 >/dev/null ; then
     echo "sesh requires fzf, but couldn't find it on your path" >&2
@@ -15,8 +17,6 @@ if ! command -V "tmux" 2>&1 >/dev/null ; then
     return 1
 fi
 
-sess() {
-    set -x
 if [[ -z "$TMUX" ]]; then
     local attach_cmd=attach-session
 else
