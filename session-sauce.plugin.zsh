@@ -16,6 +16,7 @@ if ! command -V "tmux" 2>&1 >/dev/null ; then
 fi
 
 sess() {
+    set -x
 if [[ -z "$TMUX" ]]; then
     local attach_cmd=attach-session
 else
@@ -36,7 +37,7 @@ _sess_switch_session() {
 }
 
 _sess_list_sessions() {
-    tmux list-sessions -F "#{session_name}"
+    tmux list-sessions -F "#{session_name}" >/dev/null 2>&1
 }
 
 _sess_split_name_from_dir() {
