@@ -11,7 +11,7 @@ be switched there, detaching any current session (if one exists).
 
 `sess` also handles your `TMUX` context for you, opening a tmux client if you're
 outside of one, and switching sessions of the current client if you're already
-inside tmux. No more `sessions should be nested with care, unset $TMUX to force` 
+inside tmux. No more `sessions should be nested with care, unset $TMUX to force`
 messages!
 
 Note: All subcommand names can optionally be shortened to their first letter.
@@ -46,13 +46,14 @@ Or `brew install tmux` on a Mac
 
 - `SESS_PROJECT_ROOT`
     export this variable from your zshrc or bashrc file.
-    This should be an absolute path to the directory where you keep your
-    projects. Projects in this directory will be used as options
+    This should contain a list of `:` separated absolute paths to directories
+    where you keep your projects.
+    Projects in this directory will be used as options
     for the `sess switch` command.
 
 ## Usage
 
-### Smart session switch 
+### Smart session switch
 
 ```sh
 $ sess switch [query]
@@ -75,10 +76,10 @@ $ sess new [session-name]
 ```
 
 Normally you'll just use `sess switch` to create sessions,
-but `sess new` can be used to explicitly create new session 
+but `sess new` can be used to explicitly create new session
 in the current directory.
 
-This can be useful for creating sessions for projects 
+This can be useful for creating sessions for projects
 outside of `SESS_PROJECT_ROOT`.
 
 If no session name is provided the directory name will be used

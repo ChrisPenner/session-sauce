@@ -104,11 +104,10 @@ Configuration:
 
 - SESS_PROJECT_ROOT
     export this variable from your zshrc or bashrc file.
-    This should be an absolute path to the directory where you keep your
-    projects. Projects in this directory will be used as options
+    This should contain a list of ':' separated absolute paths to directories
+    where you keep your projects.
+    Projects in this directory will be used as options
     for the 'sess switch' command.
-    Note: It supports multiple roots by separating absolute paths by a colon
-    character.
 
 Usage:
 
@@ -125,10 +124,10 @@ will be selected automatically.
 
 $ sess new [session-name]
 Normally you'll just use 'sess switch' to create sessions,
-but 'sess new' can be used to explicitly create new session 
+but 'sess new' can be used to explicitly create new session
 in the current directory.
 
-This can be useful for creating sessions for projects 
+This can be useful for creating sessions for projects
 outside of SESS_PROJECT_ROOT.
 
 If no session name is provided the directory name will be used
