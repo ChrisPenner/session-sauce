@@ -57,10 +57,8 @@ _sess_pick_and_switch() {
         _sess_switch_session "$session"
 }
 
-case "$1" in
-    # Help
-    -h*|help|--h*)
-        cat >&2 <<EOF
+_sess_usage() {
+    cat >&2 <<EOF
 'sess' is a layer on top of tmux and fzf which provides quick switching and
 creation of tmux sessions.
 
@@ -131,6 +129,12 @@ will be selected automatically.
 $ sess help
 Displays this usage info.
 EOF
+}
+
+case "$1" in
+    # Help
+    -h*|help|--h*)
+      _sess_usage
         ;;
     # new
     n*)
@@ -154,8 +158,11 @@ EOF
     # switch
     *)
         if [[ -z "$SESS_PROJECT_ROOT" ]]; then
-            echo "Set your SESS_PROJECT_ROOT environment variable" >&2
-            echo "to allow searching for possible sessions" >&2
+            echo "The default 'sess' command uses the SESS_PROJECT_ROOT environment variable." >&2
+            echo "Set this environment variable to avoid this prompt." >&2
+            echo "Here's the usage doc:" >&2
+            echo >&2
+            _sess_usage
             return 1
         fi
 
@@ -171,5 +178,6 @@ if command -V unfunction 2>&1 >/dev/null ; then
     unfunction _sess_list_sessions
     unfunction _sess_switch_session
     unfunction _sess_ensure_session
+    unfunction _sess_usage
 fi
 }
