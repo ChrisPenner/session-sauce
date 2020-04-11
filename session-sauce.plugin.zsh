@@ -1,7 +1,6 @@
 #!/bin/bash
 
 sess() {
-set -x
 # Dependencies: fzf & tmux
 if ! command -V "fzf" 2>&1 >/dev/null ; then
     echo "sesh requires fzf, but couldn't find it on your path" >&2
