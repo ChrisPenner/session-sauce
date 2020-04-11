@@ -100,6 +100,16 @@ If there is only one match for the query the result
 will be selected automatically.
 
 
+### Kill an active session
+
+```sh
+$ sess kill [query]
+```
+
+Interactively select a session from a list of all active sessions to kill.
+
+An optional query can be provided to pre-fill the fzf window.
+
 ### Help
 ```sh
 $ sess help

@@ -17,9 +17,9 @@ fi
 
 sess() {
 if [[ -z "$TMUX" ]]; then
-    attach_cmd=attach-session
+    local attach_cmd=attach-session
 else
-    attach_cmd=switch-client
+    local attach_cmd=switch-client
 fi
 
 _sess_ensure_session() {
@@ -44,17 +44,33 @@ _sess_split_name_from_dir() {
 }
 
 
-_sess_pick_and_switch() {
-        # read list of sessions from stdin
-        local session_and_dir=$(sort -k2 | uniq -i -f1 | fzf -1 --no-multi --with-nth=2 -q "$1")
-        if [[ -z "$session_and_dir" ]]; then
-            # no session chosen
-            return 0
-        fi
-        dir=$(echo "$session_and_dir" | cut -f1)
-        session=$(echo "$session_and_dir" | cut -f2)
-        _sess_ensure_session "$session" "$dir"
-        _sess_switch_session "$session"
+_sess_pick() {
+    sort -k2 | uniq -i -f1 | fzf $2 --no-multi --with-nth=2 -q "$1"
+}
+
+_sess_switch() {
+    # Switch to a chosen session
+    local session_and_dir="$1"
+    if [[ -z "$session_and_dir" ]]; then
+        # no session chosen
+        return 0
+    fi
+    local dir=$(echo "$session_and_dir" | cut -f1)
+    local session=$(echo "$session_and_dir" | cut -f2)
+    _sess_ensure_session "$session" "$dir"
+    _sess_switch_session "$session"
+}
+
+_sess_kill() {
+    # Switch to a chosen session
+    local session_and_dir="$1"
+    local session=$(echo "$session_and_dir" | cut -f2)
+    if [[ -z "$session" ]]; then
+        # no session chosen
+        return 0
+    fi
+    tmux kill-session -t "$session"
+    echo "Successfully killed '$session'"
 }
 
 _sess_usage() {
@@ -126,6 +142,11 @@ An optional query can be provided to pre-fill the fzf window.
 If there is only one match for the query the result
 will be selected automatically.
 
+$ sess kill [query]
+Interactively select a session from a list of all active sessions to kill.
+
+An optional query can be provided to pre-fill the fzf window.
+
 $ sess help
 Displays this usage info.
 EOF
@@ -152,7 +173,14 @@ case "$1" in
 
     # change/choose
     c*)
-        _sess_list_sessions | _sess_split_name_from_dir | _sess_pick_and_switch "$2"
+        local session_and_dir=$(_sess_list_sessions | _sess_split_name_from_dir | _sess_pick "$2" -1)
+        _sess_switch "$session_and_dir"
+        ;;
+
+    # kill
+    k*)
+        local session_and_dir=$(_sess_list_sessions | _sess_split_name_from_dir | _sess_pick "$2")
+        _sess_kill "$session_and_dir"
         ;;
 
     # switch
@@ -166,7 +194,8 @@ case "$1" in
             return 1
         fi
 
-        (ls -d "$SESS_PROJECT_ROOT"/* | _sess_split_name_from_dir; _sess_list_sessions) | _sess_pick_and_switch "$2"
+        local session_and_dir=$( (ls -d "$SESS_PROJECT_ROOT"/* | _sess_split_name_from_dir; _sess_list_sessions) | _sess_pick "$2" -1)
+        _sess_switch "$session_and_dir"
         ;;
 esac
 
@@ -174,7 +203,9 @@ esac
 # If we're in zsh we can unbind these functions so we don't pollute the global
 # namespace
 if command -V unfunction 2>&1 >/dev/null ; then
-    unfunction _sess_pick_and_switch
+    unfunction _sess_pick
+    unfunction _sess_switch
+    unfunction _sess_kill
     unfunction _sess_list_sessions
     unfunction _sess_switch_session
     unfunction _sess_ensure_session
