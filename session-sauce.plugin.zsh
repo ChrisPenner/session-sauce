@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sess() {
-
+set -x
 # Dependencies: fzf & tmux
 if ! command -V "fzf" 2>&1 >/dev/null ; then
     echo "sesh requires fzf, but couldn't find it on your path" >&2
@@ -37,7 +37,7 @@ _sess_switch_session() {
 }
 
 _sess_list_sessions() {
-    tmux list-sessions -F "#{session_name}" >/dev/null 2>&1
+    tmux list-sessions -F "#{session_name}" 2>&1
 }
 
 _sess_split_name_from_dir() {
