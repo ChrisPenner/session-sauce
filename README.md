@@ -44,12 +44,30 @@ Or `brew install tmux` on a Mac
 
 ## Configuration
 
-- `SESS_PROJECT_ROOT`
-    export this variable from your zshrc or bashrc file.
-    This should contain a list of `:` separated absolute paths to directories
-    where you keep your projects.
-    Projects in this directory will be used as options
-    for the `sess switch` command.
+### `SESS_PROJECT_ROOT`
+
+Export this variable from your zshrc or bashrc file.
+This should contain a list of `:` separated absolute paths to directories
+where you keep your projects.
+Projects in this directory will be used as options
+for the `sess switch` command.
+
+### tmux bindings
+
+You can set up tmux bindings to pop a side pane for switching sessions so you don't have to type an explicit shell command.
+This is handy when you're running things like vim and don't want to jump out to a prompt in order to switch sessions.
+
+Throw these into your `.tmux.conf` and customize the binding to whatever you like.
+
+```
+bind-key C-s split-window -v "zsh -ic 'sess switch'"
+bind-key C-l split-window -v "zsh -ic 'sess choose'"
+```
+
+This runs `zsh` in script mode using an interactive shell so that it loads your zsh plugins (like session-sauce).
+Otherwise it's likely that `sess` won't be on your path, or that your `SESS_PROJECT_ROOT` won't be set.
+
+If your login shell is quite slow to start up, you may want to use simply `zsh -c` and explicitly source only the `session-sauce` script, but I'll leave that up to you.
 
 ## Usage
 
