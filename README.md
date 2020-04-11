@@ -2,6 +2,8 @@
 
 Session Sauce exposes the `sess` command for quick and easy tmux session management.
 
+[![asciicast](https://asciinema.org/a/tVPETaazkExhMjFH6RWdCmUSm.svg)](https://asciinema.org/a/tVPETaazkExhMjFH6RWdCmUSm)
+
 It allows you as the user to stop caring about which sessions currently exist
 by being declarative about which project you want to switch to. If a session
 exists you'll be switched there. If it doesn't, it will be created, then you'll
