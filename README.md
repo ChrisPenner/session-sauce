@@ -28,13 +28,15 @@ Although the script has a `zsh` suffix it should be fully compatible with all sh
 
 ## Dependencies:
 
-- fzf
-    Find installation instructions here: https://github.com/junegunn/fzf
-    Or `brew install fzf` on a Mac
+**fzf**:
 
-- tmux
-    Find installation instructions here: https://github.com/tmux/tmux
-    Or `brew install tmux` on a Mac
+Find installation instructions here: https://github.com/junegunn/fzf
+Or `brew install fzf` on a Mac
+
+**tmux**:
+
+Find installation instructions here: https://github.com/tmux/tmux
+Or `brew install tmux` on a Mac
 
 ## Configuration
 
