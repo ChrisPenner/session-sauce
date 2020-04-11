@@ -148,6 +148,9 @@ Interactively select a session from a list of all active sessions to kill.
 
 An optional query can be provided to pre-fill the fzf window.
 
+$ sess version
+Display the currently installed version of sess.
+
 $ sess help
 Displays this usage info.
 EOF
@@ -182,6 +185,11 @@ case "$1" in
     k*)
         local session_and_dir=$(_sess_list_sessions | _sess_split_name_from_dir | _sess_pick "$2")
         _sess_kill "$session_and_dir"
+        ;;
+
+    # version
+    v*)
+        echo "1.0.1"
         ;;
 
     # switch

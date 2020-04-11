@@ -117,6 +117,14 @@ Interactively select a session from a list of all active sessions to kill.
 
 An optional query can be provided to pre-fill the fzf window.
 
+### Version
+
+```sh
+$ sess version
+```
+
+Display the currently installed version of sess.
+
 ### Help
 ```sh
 $ sess help
