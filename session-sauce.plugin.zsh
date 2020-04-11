@@ -40,7 +40,7 @@ _sess_list_sessions() {
 }
 
 _sess_split_name_from_dir() {
-    xargs -I '{}' bash -c 'echo -e "{}\t$(basename {})"' 
+    xargs -I '{}' bash -c 'echo -e "{}\t$(basename {})"'
 }
 
 
@@ -61,10 +61,59 @@ case "$1" in
     # Help
     -h*|help|--h*)
         cat >&2 <<EOF
+'sess' is a layer on top of tmux and fzf which provides quick switching and
+creation of tmux sessions.
+
+It allows you as the user to not care about which sessions currently exist
+by simply asserting that you wish to switch to a given project, if a session
+exists you'll be switched there. If it doesn't, it will be created, then you'll
+be switched there.
+
+'sess' also handles your TMUX context for you, opening a tmux client if you're
+outside of one, and switching sessions of the current client if you're already
+inside tmux.
+
+Note: All subcommand names can optionally be shortened to their first letter.
+e.g. 'sess s' is equivalent to 'sess switch'
+
+Configuration:
+
+- SESS_PROJECT_ROOT
+    export this variable from your zshrc or bashrc file.
+    This should be an absolute path to the directory where you keep your
+    projects. Projects in this directory will be used as options
+    for the 'sess switch' command.
+
 Usage:
 
+$ sess switch [query]
+Interactively select a session from a list of your project directories
+(configured by SESS_PROJECT_ROOT) as well as all existing sessions.
 
-$ sess new
+This is the most versatile and useful command.
+Running simply 'sess' will be expanded to 'sess switch'
+
+An optional query can be provided to pre-fill the fzf window.
+If there is only one match for the query the result
+will be selected automatically.
+
+$ sess new [session-name]
+Create new session in the current directory
+If no session name is provided the directory name will be used
+
+$ sess list
+List all active sessions
+
+$ sess choose [query]
+Interactively select a session from a list of all active sessions.
+Unlike 'sess switch' this does NOT include projects from SESS_PROJECT_ROOT.
+
+An optional query can be provided to pre-fill the fzf window.
+If there is only one match for the query the result
+will be selected automatically.
+
+$ sess help
+Displays this usage info.
 EOF
         ;;
     # new
@@ -88,13 +137,13 @@ EOF
 
     # switch
     *)
-        if [[ -z "$SESS_PROJECT_DIR" ]]; then
-            echo "Set your SESS_PROJECT_DIR environment variable" >&2
+        if [[ -z "$SESS_PROJECT_ROOT" ]]; then
+            echo "Set your SESS_PROJECT_ROOT environment variable" >&2
             echo "to allow searching for possible sessions" >&2
             return 1
         fi
 
-        (ls -d "$SESS_PROJECT_DIR"/* | _sess_split_name_from_dir; _sess_list_sessions) | _sess_pick_and_switch "$2"
+        (ls -d "$SESS_PROJECT_ROOT"/* | _sess_split_name_from_dir; _sess_list_sessions) | _sess_pick_and_switch "$2"
         ;;
 esac
 
