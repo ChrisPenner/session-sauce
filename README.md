@@ -95,7 +95,7 @@ $ sess choose [query]
 ```
 
 Interactively select a session from a list of all active sessions.
-Unlike 'sess switch' this does NOT include projects from SESS_PROJECT_ROOT.
+Unlike 'sess switch' this does NOT include projects from `SESS_PROJECT_ROOT`.
 
 An optional query can be provided to pre-fill the fzf window.
 If there is only one match for the query the result
