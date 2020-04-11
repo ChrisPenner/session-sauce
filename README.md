@@ -17,6 +17,8 @@ E.g. `sess s` is equivalent to `sess switch`
 
 ## Compatibility
 
+session-sauce should work on most linux and mac machines, and works with most bash-compatible shells.
+
 Installation options:
 
 * copy-paste `session-sauce.plugin.zsh` onto your machine and source it from your shell's `rc` file. (E.g. `~/.bashrc` or `~/.zshrc`)

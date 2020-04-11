@@ -202,7 +202,7 @@ esac
 
 # If we're in zsh we can unbind these functions so we don't pollute the global
 # namespace
-if command -V unfunction 2>&1 >/dev/null ; then
+if command -V unfunction >/dev/null 2>&1 ; then
     unfunction _sess_pick
     unfunction _sess_switch
     unfunction _sess_kill
