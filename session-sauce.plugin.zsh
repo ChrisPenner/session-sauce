@@ -158,11 +158,11 @@ case "$1" in
     # switch
     *)
         if [[ -z "$SESS_PROJECT_ROOT" ]]; then
-            echo "The default 'sess' command uses the SESS_PROJECT_ROOT environment variable." >&2
-            echo "Set this environment variable to avoid this prompt." >&2
-            echo "Here's the usage doc:" >&2
+            echo "The default 'sess' command uses the SESS_PROJECT_ROOT environment variable" >&2
+            echo "to discover your projects. Set this in your shell's rc file." >&2
+            echo "E.g. 'export SESS_PROJECT_ROOT=~/projects'" >&2
             echo >&2
-            _sess_usage
+            echo "Run 'sess help' for more information" >&2
             return 1
         fi
 
