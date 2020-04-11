@@ -107,6 +107,8 @@ Configuration:
     This should be an absolute path to the directory where you keep your
     projects. Projects in this directory will be used as options
     for the 'sess switch' command.
+    Note: It supports multiple roots by separating absolute paths by a colon
+    character.
 
 Usage:
 
@@ -194,7 +196,12 @@ case "$1" in
             return 1
         fi
 
-        local session_and_dir=$( (ls -d "$SESS_PROJECT_ROOT"/* | _sess_split_name_from_dir; _sess_list_sessions) | _sess_pick "$2" -1)
+        local session_and_dir=$( \
+                (for root in $(tr ":" "\n" <<< "$SESS_PROJECT_ROOT"); do
+                  ls -d "$root"/*
+                done | _sess_split_name_from_dir; _sess_list_sessions) |
+            _sess_pick "$2" -1)
+
         _sess_switch "$session_and_dir"
         ;;
 esac
