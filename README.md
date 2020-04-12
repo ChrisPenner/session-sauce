@@ -24,7 +24,7 @@ session-sauce should work on most linux and mac machines, and works with most ba
 Installation options:
 
 * copy-paste `session-sauce.plugin.zsh` onto your machine and source it from your shell's `rc` file. (E.g. `~/.bashrc` or `~/.zshrc`)
-* Add to your zsh plugin manager as `ChrisPenner/session-sauce`
+* Add to your ZSH plugin manager as `ChrisPenner/session-sauce`
 
 ## Compatibility
 
@@ -64,7 +64,7 @@ bind-key C-s split-window -v "zsh -ic 'sess switch'"
 bind-key C-l split-window -v "zsh -ic 'sess choose'"
 ```
 
-This runs `zsh` in script mode using an interactive shell so that it loads your zsh plugins (like session-sauce).
+This runs `zsh` in script mode using an interactive shell so that it loads your ZSH plugins (like session-sauce).
 Otherwise it's likely that `sess` won't be on your path, or that your `SESS_PROJECT_ROOT` won't be set.
 
 If your login shell is quite slow to start up, you may want to use simply `zsh -c` and explicitly source only the `session-sauce` script, but I'll leave that up to you.

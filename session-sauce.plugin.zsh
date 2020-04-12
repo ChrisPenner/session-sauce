@@ -31,6 +31,12 @@ _sess_ensure_session() {
 }
 
 _sess_switch_session() {
+    # Before switching, stash the current session so we can switch back later.
+    local current_session=$(tmux display-message -p '#S')
+    if [[ -n "$current_session" ]] ; then
+        # Set a global tmux env var with the current session
+        tmux set-environment -g SESS_LAST_SESSION "$current_session"
+    fi
     # Attach to or switch to session
     tmux "$attach_cmd" -t "$1"
 }
@@ -42,7 +48,6 @@ _sess_list_sessions() {
 _sess_split_name_from_dir() {
     xargs -I '{}' bash -c 'echo -e "{}\t$(basename {})"'
 }
-
 
 _sess_pick() {
     sort -k2 | uniq -i -f1 | fzf $2 --no-multi --with-nth=2 -q "$1"
@@ -62,7 +67,7 @@ _sess_switch() {
 }
 
 _sess_kill() {
-    # Switch to a chosen session
+    # Kill the chosen session
     local session_and_dir="$1"
     local session=$(echo "$session_and_dir" | cut -f2)
     if [[ -z "$session" ]]; then
@@ -190,6 +195,16 @@ case "$1" in
     # version
     v*)
         echo "1.0.1"
+        ;;
+
+    # Quick switch back to last session
+    '-')
+        local last_session=$(tmux show-environment -g SESS_LAST_SESSION 2> /dev/null | sed "s:^.*=::")
+        if [[ -z "$last_session" ]]; then
+            echo "No session stashed. Try switching sessions first."
+            return 1
+        fi
+        _sess_switch_session "$last_session"
         ;;
 
     # switch
