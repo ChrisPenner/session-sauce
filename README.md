@@ -1,5 +1,23 @@
 # Session Sauce
 
+<!-- toc GFM -->
+
+* [Compatibility](#compatibility)
+* [Dependencies:](#dependencies)
+* [Configuration](#configuration)
+  * [`SESS_PROJECT_ROOT`](#sess_project_root)
+  * [tmux bindings](#tmux-bindings)
+* [Usage](#usage)
+  * [Smart session switch](#smart-session-switch)
+  * [Explicitly create a new session](#explicitly-create-a-new-session)
+  * [List all active sessions](#list-all-active-sessions)
+  * [Choose an active session](#choose-an-active-session)
+  * [Kill an active session](#kill-an-active-session)
+  * [Version](#version)
+  * [Help](#help)
+
+<!-- tocstop -->
+
 Session Sauce exposes the `sess` command for quick and easy tmux session management.
 
 [![asciicast](https://asciinema.org/a/tVPETaazkExhMjFH6RWdCmUSm.svg)](https://asciinema.org/a/tVPETaazkExhMjFH6RWdCmUSm)
@@ -25,8 +43,6 @@ Installation options:
 
 * copy-paste `session-sauce.plugin.zsh` onto your machine and source it from your shell's `rc` file. (E.g. `~/.bashrc` or `~/.zshrc`)
 * Add to your ZSH plugin manager as `ChrisPenner/session-sauce`
-
-## Compatibility
 
 Although the script has a `zsh` suffix it should be fully compatible with all shells that can interpret `bash`.
 
