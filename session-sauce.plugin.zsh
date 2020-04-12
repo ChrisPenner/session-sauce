@@ -80,6 +80,9 @@ _sess_kill() {
 
 _sess_usage() {
     cat >&2 <<EOF
+Consult the README for the most comprehensive info:
+https://github.com/ChrisPenner/session-sauce
+
 'sess' is a layer on top of tmux and fzf which provides quick switching and
 creation of tmux sessions.
 
@@ -126,6 +129,13 @@ Running simply 'sess' will be expanded to 'sess switch'
 An optional query can be provided to pre-fill the fzf window.
 If there is only one match for the query the result
 will be selected automatically.
+
+$ sess -
+Switch back to your previously accessed session.
+Use this when quick-switching between two projects.
+
+This command requires a running tmux server.
+I recommend adding a tmux binding for this one; consult the README to see how.
 
 $ sess new [session-name]
 Normally you'll just use 'sess switch' to create sessions,
@@ -194,7 +204,7 @@ case "$1" in
 
     # version
     v*)
-        echo "1.0.1"
+        echo "1.2.0"
         ;;
 
     # Quick switch back to last session
