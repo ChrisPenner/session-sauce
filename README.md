@@ -76,8 +76,14 @@ This is handy when you're running things like vim and don't want to jump out to 
 Throw these into your `.tmux.conf` and customize the binding to whatever you like.
 
 ```
+# Ctrl-s to switch sessions
 bind-key C-s split-window -v "zsh -ic 'sess switch'"
+
+# Ctrl-l to switch to an existing session
 bind-key C-l split-window -v "zsh -ic 'sess choose'"
+
+# Ctrl-o to immediately jump back to previous session
+bind-key C-o run "zsh -ic 'sess -'"
 ```
 
 This runs `zsh` in script mode using an interactive shell so that it loads your ZSH plugins (like session-sauce).
