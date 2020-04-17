@@ -151,6 +151,8 @@ Interactively select a session from a list of all active sessions to kill.
 
 An optional query can be provided to pre-fill the fzf window.
 
+Use Tab to select multiple sessions to kill.
+
 ### Version
 
 ```sh

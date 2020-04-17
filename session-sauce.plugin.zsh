@@ -50,7 +50,7 @@ _sess_split_name_from_dir() {
 }
 
 _sess_pick() {
-    sort -k2 | uniq -i -f1 | fzf $2 --no-multi --with-nth=2 -q "$1"
+    sort -k2 | uniq -i -f1 | fzf $2 --with-nth=2 -q "$1"
 }
 
 _sess_switch() {
@@ -68,14 +68,14 @@ _sess_switch() {
 
 _sess_kill() {
     # Kill the chosen session
-    local session_and_dir="$1"
-    local session=$(echo "$session_and_dir" | cut -f2)
-    if [[ -z "$session" ]]; then
+    local sessions_and_dirs="$1"
+    local sessions=$(echo "$session_and_dir" | cut -f2)
+    if [[ -z "$sessions" ]]; then
         # no session chosen
         return 0
     fi
-    tmux kill-session -t "$session"
-    echo "Successfully killed '$session'"
+    echo "$sessions" | xargs -n1  tmux kill-session -t
+    echo "$sessions" | xargs -n1 echo "Successfully killed"
 }
 
 _sess_usage() {
@@ -160,6 +160,7 @@ will be selected automatically.
 
 $ sess kill [query]
 Interactively select a session from a list of all active sessions to kill.
+Use tab to select multiple sessions.
 
 An optional query can be provided to pre-fill the fzf window.
 
@@ -198,13 +199,13 @@ case "$1" in
 
     # kill
     k*)
-        local session_and_dir=$(_sess_list_sessions | _sess_split_name_from_dir | _sess_pick "$2")
+        local session_and_dir=$(_sess_list_sessions | _sess_split_name_from_dir | _sess_pick "$2" "--multi")
         _sess_kill "$session_and_dir"
         ;;
 
     # version
     v*)
-        echo "1.2.0"
+        echo "1.3.0"
         ;;
 
     # Quick switch back to last session
@@ -232,7 +233,7 @@ case "$1" in
                 (for root in $(tr ":" "\n" <<< "$SESS_PROJECT_ROOT"); do
                   ls -d "$root"/*
                 done | _sess_split_name_from_dir; _sess_list_sessions) |
-            _sess_pick "$2" -1)
+            _sess_pick "$2" --select-1)
 
         _sess_switch "$session_and_dir"
         ;;

@@ -1,3 +1,6 @@
+# 1.3.0
+Allow selecting multiple sessions for `sess kill`.
+
 # 1.2.0
 
 Add 'sess -' which switches you back to your last-accessed session.
