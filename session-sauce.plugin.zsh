@@ -27,18 +27,23 @@ _sess_ensure_session() {
     local dir="$2"
     # Create new session
     # Fail silently if it already exists
-    tmux new-session -d -s "$session" -c "$dir" >/dev/null 2>&1
+    tmux new-session -d -s "$session" -c "$dir" >/dev/null 2>&1 || true
 }
 
 _sess_switch_session() {
+    session="$1"
+    dir="$2"
     # Before switching, stash the current session so we can switch back later.
     local current_session=$(tmux display-message -p '#S')
     if [[ -n "$current_session" ]] ; then
         # Set a global tmux env var with the current session
         tmux set-environment -g SESS_LAST_SESSION "$current_session"
     fi
+    if [[ -n "$dir" ]]; then
+        _sess_ensure_session "$session" "$dir"
+    fi
     # Attach to or switch to session
-    tmux "$attach_cmd" -t "$1"
+    tmux "$attach_cmd" -t "$session"
 }
 
 _sess_list_sessions() {
@@ -46,7 +51,8 @@ _sess_list_sessions() {
 }
 
 _sess_split_name_from_dir() {
-    xargs -I '{}' bash -c 'echo -e "{}\t$(basename {})"'
+    # This is a performance bottleneck, run 8 tasks at a time.
+    xargs -P8 -I '{}' bash -c 'echo -e "{}\t$(basename {})"'
 }
 
 _sess_pick() {
@@ -62,8 +68,7 @@ _sess_switch() {
     fi
     local dir=$(echo "$session_and_dir" | cut -f1)
     local session=$(echo "$session_and_dir" | cut -f2)
-    _sess_ensure_session "$session" "$dir"
-    _sess_switch_session "$session"
+    _sess_switch_session "$session" "$dir"
 }
 
 _sess_kill() {
@@ -179,11 +184,11 @@ case "$1" in
         ;;
     # new
     n*)
+        set -x
         # Create if missing, otherwise join existing
         local dir="$(pwd)"
         local session="$(basename "$dir")"
-        _sess_ensure_session "$session" "$dir"
-        _sess_switch_session "$session"
+        _sess_switch_session "$session" "$dir"
         ;;
 
     # list
@@ -232,8 +237,9 @@ case "$1" in
         local session_and_dir=$( \
                 (for root in $(tr ":" "\n" <<< "$SESS_PROJECT_ROOT"); do
                   ls -d "$root"/*
-                done | _sess_split_name_from_dir; _sess_list_sessions) |
+                done | _sess_split_name_from_dir; _sess_list_sessions | sed "s/^/.	/") |
             _sess_pick "$2" --select-1)
+        echo "selecting: ($session_and_dir)"
 
         _sess_switch "$session_and_dir"
         ;;

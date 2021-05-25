@@ -1,3 +1,6 @@
+# 1.3.1
+* Speed up listing sessions.
+* Fix bug when selecting manually created sessions which aren't directories from `SESS_PROJECT_ROOT`
 # 1.3.0
 Allow selecting multiple sessions for `sess kill`.
 
