@@ -234,6 +234,8 @@ case "$1" in
             return 1
         fi
 
+        # sed is used to introduce a 'dummy' filepath for sessions which already exist.
+        # It is ignored when switching to the session since it already exists.
         local session_and_dir=$( \
                 (for root in $(tr ":" "\n" <<< "$SESS_PROJECT_ROOT"); do
                   ls -d "$root"/*
