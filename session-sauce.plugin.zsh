@@ -184,7 +184,6 @@ case "$1" in
         ;;
     # new
     n*)
-        set -x
         # Create if missing, otherwise join existing
         local dir="$(pwd)"
         local session="$(basename "$dir")"
