@@ -240,8 +240,6 @@ case "$1" in
                   ls -d "$root"/*
                 done | _sess_split_name_from_dir; _sess_list_sessions | sed "s/^/.	/") |
             _sess_pick "$2" --select-1)
-        echo "selecting: ($session_and_dir)"
-
         _sess_switch "$session_and_dir"
         ;;
 esac
