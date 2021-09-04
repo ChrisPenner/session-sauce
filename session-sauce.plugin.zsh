@@ -237,7 +237,7 @@ case "$1" in
         # It is ignored when switching to the session since it already exists.
         local session_and_dir=$( \
                 (for root in $(tr ":" "\n" <<< "$SESS_PROJECT_ROOT"); do
-                  ls -d "$root"/*
+                  ls -d "$root"/* || echo "No projects found in $root." >&2
                 done | _sess_split_name_from_dir; _sess_list_sessions | sed "s/^/.	/") |
             _sess_pick "$2" --select-1)
         _sess_switch "$session_and_dir"
