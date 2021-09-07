@@ -47,7 +47,7 @@ _sess_switch_session() {
 }
 
 _sess_list_sessions() {
-    tmux list-sessions -F "#{session_name}" 2>&1
+    tmux list-sessions -F "#{session_name}"
 }
 
 _sess_split_name_from_dir() {
@@ -238,7 +238,7 @@ case "$1" in
         local session_and_dir=$( \
                 (for root in $(tr ":" "\n" <<< "$SESS_PROJECT_ROOT"); do
                   ls -d "$root"/* || echo "No projects found in $root." >&2
-                done | _sess_split_name_from_dir; _sess_list_sessions | sed "s/^/.	/") |
+                done | _sess_split_name_from_dir; _sess_list_sessions 2>/dev/null | sed "s/^/.	/") |
             _sess_pick "$2" --select-1)
         _sess_switch "$session_and_dir"
         ;;
