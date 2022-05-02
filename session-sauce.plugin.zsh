@@ -22,6 +22,17 @@ else
     local attach_cmd=switch-client
 fi
 
+if [[ "$SESS_USE_FZF_TMUX" != "true" ]]; then
+    local fzf_cmd=fzf
+else
+    if ! command -V "fzf-tmux" 2>&1 >/dev/null; then
+        echo "SESS_USE_FZF_TMUX is set, but couldn't find fzf-tmux it on your path" >&2
+        echo "Please upgrade fzf to 0.9.4-1 or higher" >&2
+        return 1
+    fi
+    local fzf_cmd=fzf-tmux
+fi
+
 _sess_ensure_session() {
     local session="$1"
     local dir="$2"
@@ -56,7 +67,7 @@ _sess_split_name_from_dir() {
 }
 
 _sess_pick() {
-    sort -k2 | uniq -i -f1 | fzf $2 --with-nth=2 -q "$1"
+    sort -k2 | uniq -i -f1 | $fzf_cmd $2 --with-nth=2 -q "$1"
 }
 
 _sess_switch() {
@@ -121,6 +132,10 @@ Configuration:
     where you keep your projects.
     Projects in this directory will be used as options
     for the 'sess switch' command.
+
+- SESS_USE_FZF_TMUX
+    export this variable from your zshrc or bashrc file.
+    Set this to 'true' to use fzf-tmux instead of fzf, opening fzf in a tmux pane.
 
 Usage:
 

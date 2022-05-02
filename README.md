@@ -6,6 +6,7 @@
 * [Dependencies:](#dependencies)
 * [Configuration](#configuration)
   * [`SESS_PROJECT_ROOT`](#sess_project_root)
+  * [`SESS_USE_FZF_TMUZ`](#sess_use_fzf_tmuz)
   * [tmux bindings](#tmux-bindings)
 * [Usage](#usage)
   * [Smart session switch](#smart-session-switch)
@@ -67,6 +68,11 @@ This should contain a list of `:` separated absolute paths to directories
 where you keep your projects.
 Projects in this directory will be used as options
 for the `sess switch` command.
+
+### `SESS_USE_FZF_TMUZ`
+
+Export this variable from your zshrc or bashrc file.
+Set this to `true` to use [`fzf-tmux`](https://github.com/junegunn/fzf#fzf-tmux-script) instead of `fzf`, opening fzf in a tmux pane.
 
 ### tmux bindings
 
