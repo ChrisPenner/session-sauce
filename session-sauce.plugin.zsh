@@ -52,7 +52,7 @@ _sess_list_sessions() {
 
 _sess_split_name_from_dir() {
     # This is a performance bottleneck, run 8 tasks at a time.
-    xargs -P8 -I '{}' bash -c 'echo -e "{}\t$(basename {})"'
+    xargs -P8 -I '{}' bash -c 'echo -e "{}\t$(basename {} | tr . _)"'
 }
 
 _sess_pick() {
@@ -186,7 +186,7 @@ case "$1" in
     n*)
         # Create if missing, otherwise join existing
         local dir="$(pwd)"
-        local session="$(basename "$dir")"
+        local session="$(basename "$dir" | tr . _)"
         _sess_switch_session "$session" "$dir"
         ;;
 

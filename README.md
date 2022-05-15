@@ -67,6 +67,9 @@ This should contain a list of `:` separated absolute paths to directories
 where you keep your projects.
 Projects in this directory will be used as options
 for the `sess switch` command.
+Periods in project directory names will be replaced with underscores in the
+corresponding session names due to tmux session naming restrictions
+(tmux/tmux@9ee93b3).
 
 ### tmux bindings
 
@@ -116,7 +119,9 @@ in the current directory.
 This can be useful for creating sessions for projects
 outside of `SESS_PROJECT_ROOT`.
 
-If no session name is provided the directory name will be used
+If no session name is provided the directory name will be used, with periods
+replaced with underscores due to tmux session naming restrictions
+(tmux/tmux@9ee93b3).
 
 ### List all active sessions
 
