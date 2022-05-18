@@ -6,6 +6,7 @@
 * [Dependencies:](#dependencies)
 * [Configuration](#configuration)
   * [`SESS_PROJECT_ROOT`](#sess_project_root)
+  * [`SESS_USE_FZF_TMUZ`](#sess_use_fzf_tmuz)
   * [tmux bindings](#tmux-bindings)
 * [Usage](#usage)
   * [Smart session switch](#smart-session-switch)
@@ -70,6 +71,11 @@ for the `sess switch` command.
 Periods in project directory names will be replaced with underscores in the
 corresponding session names due to tmux session naming restrictions
 (tmux/tmux@9ee93b3).
+
+### `SESS_USE_FZF_TMUZ`
+
+Export this variable from your zshrc or bashrc file.
+Set this to `true` to use [`fzf-tmux`](https://github.com/junegunn/fzf#fzf-tmux-script) instead of `fzf`, opening fzf in a tmux pane.
 
 ### tmux bindings
 
